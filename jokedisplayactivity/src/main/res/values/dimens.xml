@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="joke_text">120dp</dimen>
+    <dimen name="text_sixfour">64sp</dimen>
+</resources>

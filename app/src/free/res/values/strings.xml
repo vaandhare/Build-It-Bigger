@@ -1,0 +1,9 @@
+<resources>
+    <string name="banner_ad_unit_id">ca-app-pub-3523952097375361/7035860332</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3523952097375361/6278340100</string>
+    <string name="ad_id_main">ca-app-pub-3523952097375361~7318931367</string>
+    <string name="load_fail">onAdFailedToLoad: ad Failed to load. Reloading</string>
+    <string name="loaded">onAdLoaded: interstitial is ready!</string>
+    <string name="was_ready">onClick: interstitial was ready</string>
+    <string name="was_not_ready">onClick: interstitial was not ready.</string>
+</resources>

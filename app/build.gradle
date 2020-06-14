@@ -1,0 +1,101 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.cloud.tools.endpoints-framework-client'
+
+buildscript {
+    repositories {
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath 'com.google.cloud.tools:endpoints-framework-gradle-plugin:2.0.1'
+    }
+}
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
+
+    defaultConfig {
+        applicationId "com.udacity.gradle.builditbigger"
+        minSdkVersion 24
+        targetSdkVersion 29
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        free {
+            dimension "version"
+            applicationId "com.udacity.gradle.builditbigger.free"
+            versionName "1.0­free"
+        }
+
+        paid {
+            dimension "version"
+            applicationId "com.udacity.gradle.builditbigger.paid"
+            versionNameSuffix "1.0­paid"
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    endpointsServer project(path: ':backend', configuration: 'endpoints')
+    implementation project(":jokedisplayactivity")
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    freeImplementation 'com.google.android.gms:play-services-ads:19.1.0'
+    implementation 'com.google.api-client:google-api-client:1.29.0'
+    implementation 'com.google.http-client:google-http-client-android:1.29.1'
+    testImplementation 'junit:junit:4.13'
+    implementation 'junit:junit:4.13'
+
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+}
+
+task testTask {
+    dependsOn (['launchServer', 'runTests', 'closeServer'])
+}
+
+//Launches the GCE local development server
+//Runs all tests
+//Shuts the server down again
+task launchServer (dependsOn :':backend:appengineStart'){
+    evaluationDependsOn ':backend'
+    project(':backend').afterEvaluate {
+        backend -> backend.extensions.appengine.daemon = true
+    }
+    doLast {
+        println "started the server!"
+    }
+}
+
+task runTests (dependsOn: ':app:connectedAndroidTest') {
+    mustRunAfter 'launchServer'
+}
+
+task closeServer (dependsOn: ':backend:appengineStop'){
+    mustRunAfter 'runTests'
+}

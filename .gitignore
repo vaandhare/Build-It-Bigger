@@ -1,0 +1,10 @@
+# Project exclude paths
+/.gradle/
+/app/build/
+/app/build/intermediates/javac/freeDebug/classes/
+/backend/build/
+/backend/build/classes/java/main/
+/jokedisplayactivity/build/
+/jokedisplayactivity/build/intermediates/javac/debug/classes/
+/jokelib/build/
+/jokelib/build/classes/java/main/
